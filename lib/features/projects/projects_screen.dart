@@ -11,7 +11,7 @@ class ProjectsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final resume = ref.watch(resumeProvider);
-    
+
     return SingleChildScrollView(
       child: Container(
         constraints: BoxConstraints(
@@ -26,18 +26,29 @@ class ProjectsScreen extends ConsumerWidget {
               title: 'Projects',
               subtitle: 'A showcase of my recent work and contributions',
             ),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: Responsive.isMobile(context) ? 1 : 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: Responsive.isMobile(context) ? 1.2 : 1.1,
-              ),
-              itemCount: resume.projects.length,
-              itemBuilder: (context, index) {
-                return ProjectCard(project: resume.projects[index]);
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final isMobile = Responsive.isMobile(context);
+                const spacing = 16.0;
+                
+                return Wrap(
+                  spacing: spacing,
+                  runSpacing: spacing,
+                  children: resume.projects.asMap().entries.map((entry) {
+                    final project = entry.value;
+                    final cardWidth = isMobile
+                        ? constraints.maxWidth
+                        : (constraints.maxWidth - spacing) / 2;
+                    
+                    return ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: cardWidth,
+                        minWidth: cardWidth,
+                      ),
+                      child: ProjectCard(project: project),
+                    );
+                  }).toList(),
+                );
               },
             ),
             const SizedBox(height: 40),

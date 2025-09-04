@@ -186,13 +186,15 @@ class _AppScaffoldState extends ConsumerState<AppScaffold> {
           child: const Text('Oladipo Danmusa', style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         actions: [
-          IconButton(
-            icon: Icon(themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode),
-            onPressed: () {
-              final current = ref.read(themeModeProvider);
-              ref.read(themeModeProvider.notifier).state = current == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
-            },
-          ),
+          Responsive.isMobile(context)
+              ? const SizedBox.shrink()
+              : IconButton(
+                  icon: Icon(themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode),
+                  onPressed: () {
+                    final current = ref.read(themeModeProvider);
+                    ref.read(themeModeProvider.notifier).state = current == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+                  },
+                ),
         ],
       ),
       body: Column(
@@ -201,7 +203,7 @@ class _AppScaffoldState extends ConsumerState<AppScaffold> {
           Expanded(child: widget.child),
         ],
       ),
-      bottomNavigationBar: Responsive.isMobile(context) ? _MobileNav(currentPath: path) : null,
+      drawer: Responsive.isMobile(context) ? _MobileDrawer(currentPath: path) : null,
     );
   }
 }
@@ -314,51 +316,156 @@ class _DesktopNav extends StatelessWidget {
   }
 }
 
-class _MobileNav extends StatelessWidget {
-  const _MobileNav({required this.currentPath});
+class _MobileDrawer extends StatelessWidget {
+  const _MobileDrawer({required this.currentPath});
   final String currentPath;
 
-  int _indexFor(String p) {
-    if (_match(p, '/projects')) return 1;
-    if (_match(p, '/experience')) return 2;
-    if (_match(p, '/skills')) return 3;
-    if (_match(p, '/contact')) return 4;
-    return 0;
-  }
-
-  void _go(BuildContext context, int i) {
-    switch (i) {
-      case 0:
-        context.go('/');
-        break;
-      case 1:
-        context.go('/projects');
-        break;
-      case 2:
-        context.go('/experience');
-        break;
-      case 3:
-        context.go('/skills');
-        break;
-      case 4:
-        context.go('/contact');
-        break;
-    }
-  }
+  static const _navigationItems = [
+    (label: 'Home', path: '/', icon: Icons.home),
+    (label: 'Projects', path: '/projects', icon: Icons.work),
+    (label: 'Experience', path: '/experience', icon: Icons.timeline),
+    (label: 'Skills', path: '/skills', icon: Icons.psychology),
+    (label: 'About', path: '/about', icon: Icons.person),
+    (label: 'Contact', path: '/contact', icon: Icons.contact_mail),
+    (label: 'Resume', path: '/resume', icon: Icons.description),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      currentIndex: _indexFor(currentPath),
-      onTap: (i) => _go(context, i),
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.work), label: 'Projects'),
-        BottomNavigationBarItem(icon: Icon(Icons.timeline), label: 'Experience'),
-        BottomNavigationBarItem(icon: Icon(Icons.auto_fix_high), label: 'Skills'),
-        BottomNavigationBarItem(icon: Icon(Icons.contact_mail), label: 'Contact'),
-      ],
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Drawer(
+      child: Column(
+        children: [
+          // Modern drawer header with gradient
+          Container(
+            height: 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  colorScheme.primary,
+                  colorScheme.secondary,
+                ],
+              ),
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    CircleAvatar(
+                      radius: 32,
+                      backgroundColor: Colors.white.withValues(alpha: 0.2),
+                      child: Text(
+                        'OD',
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Oladipo Danmusa',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Flutter & iOS Developer',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: Colors.white.withValues(alpha: 0.9),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Navigation items
+          Expanded(
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              itemCount: _navigationItems.length,
+              separatorBuilder: (context, index) => const Divider(
+                height: 1,
+                indent: 56,
+                endIndent: 16,
+              ),
+              itemBuilder: (context, index) {
+                final item = _navigationItems[index];
+                final isActive = _match(currentPath, item.path);
+
+                return ListTile(
+                  leading: Icon(
+                    item.icon,
+                    color: isActive ? colorScheme.primary : colorScheme.onSurfaceVariant,
+                  ),
+                  title: Text(
+                    item.label,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: isActive ? colorScheme.primary : colorScheme.onSurface,
+                      fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+                    ),
+                  ),
+                  selected: isActive,
+                  selectedTileColor: colorScheme.primaryContainer.withValues(alpha: 0.3),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  onTap: () {
+                    Navigator.of(context).pop(); // Close drawer
+                    context.go(item.path);
+                  },
+                );
+              },
+            ),
+          ),
+
+          // Footer with theme toggle
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: colorScheme.outline.withValues(alpha: 0.2),
+                  width: 1,
+                ),
+              ),
+            ),
+            child: Consumer(
+              builder: (context, ref, _) {
+                final themeMode = ref.watch(themeModeProvider);
+                return ListTile(
+                  leading: Icon(
+                    themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  title: Text(
+                    themeMode == ThemeMode.dark ? 'Light Mode' : 'Dark Mode',
+                    style: theme.textTheme.bodyLarge,
+                  ),
+                  contentPadding: EdgeInsets.zero,
+                  onTap: () {
+                    final current = ref.read(themeModeProvider);
+                    ref.read(themeModeProvider.notifier).state = current == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
