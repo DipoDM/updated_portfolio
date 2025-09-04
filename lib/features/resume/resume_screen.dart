@@ -31,7 +31,10 @@ class ResumeScreen extends ConsumerWidget {
                 children: [
                   ElevatedButton.icon(
                     onPressed: () => ResumeDownload.downloadGenerated(context, resume),
-                    icon: const Icon(Icons.picture_as_pdf),
+                    icon: Icon(
+                      Icons.picture_as_pdf,
+                      color: theme.colorScheme.onPrimary,
+                    ),
                     label: const Text('Generate PDF'),
                   ),
                   const SizedBox(width: 8),
@@ -54,7 +57,7 @@ class ResumeScreen extends ConsumerWidget {
                       children: [
                         CircleAvatar(
                           radius: 30,
-                          backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                          backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
                           child: Text(
                             resume.fullName.split(' ').map((n) => n[0]).join(),
                             style: theme.textTheme.headlineSmall?.copyWith(
@@ -116,7 +119,7 @@ class ResumeScreen extends ConsumerWidget {
                         children: resume.skills.take(15).map((skill) {
                           return Chip(
                             label: Text(skill),
-                            backgroundColor: theme.colorScheme.surfaceVariant,
+                            backgroundColor: theme.colorScheme.surfaceContainerHighest,
                             labelStyle: theme.textTheme.bodySmall,
                           );
                         }).toList(),
