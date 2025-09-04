@@ -265,11 +265,11 @@ class _DesktopNav extends StatelessWidget {
     final s = t.colorScheme;
 
     return Material(
-      color: s.surface.withOpacity(0.85),
+      color: s.surface.withValues(alpha: 0.85),
       elevation: 0,
       child: Container(
         decoration: BoxDecoration(
-          color: s.surface.withOpacity(0.85),
+          color: s.surface.withValues(alpha: 0.85),
           border: Border(bottom: BorderSide(color: s.outlineVariant, width: 1)),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -279,9 +279,9 @@ class _DesktopNav extends StatelessWidget {
               shape: const StadiumBorder(),
               side: BorderSide(color: s.outlineVariant),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              backgroundColor: s.surfaceContainerHighest.withOpacity(0.65),
+              backgroundColor: s.surfaceContainerHighest.withValues(alpha: 0.65),
               selectedColor: s.primaryContainer,
-              disabledColor: s.surfaceContainerHighest.withOpacity(0.30),
+              disabledColor: s.surfaceContainerHighest.withValues(alpha: 0.30),
               labelStyle: t.textTheme.labelLarge?.copyWith(color: s.onSurface),
               secondaryLabelStyle: t.textTheme.labelLarge?.copyWith(color: s.onPrimaryContainer),
               brightness: t.brightness,

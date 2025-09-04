@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'responsive.dart';
 
 class SectionHeader extends StatelessWidget {
   final String title;
@@ -15,38 +16,73 @@ class SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isMobile = Responsive.isMobile(context);
+    final isTablet = Responsive.isTablet(context);
+    
+    // Responsive spacing and layout
+    final bottomPadding = isMobile ? 16.0 : isTablet ? 20.0 : 24.0;
+    final titleSubtitleSpacing = isMobile ? 6.0 : 8.0;
+    
+    // Action button handling for mobile
+    final shouldWrapAction = isMobile && action != null;
     
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Expanded(
-            child: Column(
+      padding: EdgeInsets.only(bottom: bottomPadding),
+      child: shouldWrapAction
+          ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.primary,
-                  ),
+                _buildTitleSubtitle(context, theme, isMobile, titleSubtitleSpacing),
+                SizedBox(height: isMobile ? 12 : 16),
+                action!,
+              ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: _buildTitleSubtitle(context, theme, isMobile, titleSubtitleSpacing),
                 ),
-                if (subtitle != null) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    subtitle!,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
+                if (action != null && !isMobile) ...[
+                  const SizedBox(width: 16),
+                  action!,
                 ],
               ],
             ),
+    );
+  }
+  
+  Widget _buildTitleSubtitle(BuildContext context, ThemeData theme, bool isMobile, double spacing) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: isMobile
+              ? theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.primary,
+                  fontSize: 24,
+                )
+              : theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.primary,
+                ),
+        ),
+        if (subtitle != null) ...[
+          SizedBox(height: spacing),
+          Text(
+            subtitle!,
+            style: isMobile
+                ? theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  )
+                : theme.textTheme.bodyLarge?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
           ),
-          if (action != null) action!,
         ],
-      ),
+      ],
     );
   }
 }
