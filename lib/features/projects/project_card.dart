@@ -131,13 +131,22 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                         tooltip: 'Open Project',
                         onPressed: () async {
                           final url = Uri.parse(widget.project.url);
-                          if (await canLaunchUrl(url)) {
-                            await launchUrl(url);
-                          } else {
+                          try {
+                            final launched = await launchUrl(url);
+                            if (!launched) {
+                              throw Exception('Failed to launch URL');
+                            }
+                          } catch (e) {
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Could not launch ${widget.project.url}')),
-                              );
+                              await Clipboard.setData(ClipboardData(text: widget.project.url));
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Unable to open link. URL copied to clipboard: ${widget.project.url}'),
+                                    duration: const Duration(seconds: 4),
+                                  ),
+                                );
+                              }
                             }
                           }
                         },
