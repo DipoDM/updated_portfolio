@@ -27,7 +27,7 @@ final resumeProvider = Provider<ResumeData>((ref) {
         company: 'Visa',
         role: 'Design Engineer — Flutter',
         start: 'April 2022',
-        end: 'August 2025',
+        end: 'Present',
         highlights: [
           'Built reusable, adaptive UI components and libraries in Flutter and Swift for internal/external teams.',
           'Delivered MVPs and contributed to flagship apps (e.g., Visa Olympic) with secure payment features.',
@@ -41,7 +41,7 @@ final resumeProvider = Provider<ResumeData>((ref) {
         company: 'Roland DGA',
         role: 'Mobile Application Lead (Flutter/Node.js/UI/UX) — Remote, Contract',
         start: 'November 2022',
-        end: 'September 2025',
+        end: 'July 2025',
         highlights: [
           'Owned architecture/design and delivery of cross-platform apps in Flutter.',
           'Defined scalable design systems and consistent branding.',
@@ -73,17 +73,6 @@ final resumeProvider = Provider<ResumeData>((ref) {
           'Built real-time location features, chat, and QR workflows.',
           'Implemented Firebase auth, storage, and notifications.',
           'Delivered role-based UX for Driver, Customer, and Seller.',
-        ],
-      ),
-      Experience(
-        company: 'Orderlivery',
-        role: 'Mobile Developer — Flutter',
-        start: 'April 2021',
-        end: 'October 2021',
-        highlights: [
-          'Shipped cross-platform app (App Store/Play) with PWA companion.',
-          'MongoDB backend; Firebase; Google Maps real-time tracking.',
-          'Built a web dashboard for operations visibility.',
         ],
       ),
       Experience(
@@ -122,6 +111,7 @@ final resumeProvider = Provider<ResumeData>((ref) {
           'Client management and payment tracking.',
           'Responsive design for desktop and mobile.',
         ],
+        isPrivate: true,
       ),
       Project(
         name: 'Co-Foundr Flutter App',
@@ -134,6 +124,7 @@ final resumeProvider = Provider<ResumeData>((ref) {
           'Firebase authentication and cloud storage.',
           'Modern Material 3 design system.',
         ],
+        isPrivate: true,
       ),
       Project(
         name: 'Updated Portfolio',
@@ -158,6 +149,7 @@ final resumeProvider = Provider<ResumeData>((ref) {
           'Offline support for field operations.',
           'GDPR-compliant data handling.',
         ],
+        isPrivate: true,
       ),
       Project(
         name: 'AI Invoice Builder',
@@ -170,8 +162,9 @@ final resumeProvider = Provider<ResumeData>((ref) {
           'RESTful API with comprehensive documentation.',
           'Scalable microservices architecture.',
         ],
+        isPrivate: true,
       ),
-      
+
       // Established Production Apps
       Project(
         name: 'My Invoice App',
@@ -208,20 +201,9 @@ final resumeProvider = Provider<ResumeData>((ref) {
           'Firebase auth, storage, and cloud functions.',
           'Comment system with moderation tools.',
         ],
+        isPrivate: true,
       ),
-      Project(
-        name: 'Orderlivery Platform',
-        url: 'https://github.com/DipoDM/Orderlivery-restaurant_app-master',
-        tech: ['Flutter', 'MongoDB', 'Firebase', 'Google Maps', 'PWA'],
-        description: 'Complete food delivery ecosystem with multiple apps.',
-        highlights: [
-          'Customer, restaurant, and admin applications.',
-          'Real-time order tracking with live maps.',
-          'Payment gateway integration and receipts.',
-          'Analytics dashboard for business insights.',
-        ],
-      ),
-      
+
       // Technical & Learning Projects
       Project(
         name: 'AI Caption Generator',
@@ -234,6 +216,7 @@ final resumeProvider = Provider<ResumeData>((ref) {
           'Integration with popular social media APIs.',
           'Support for multiple languages and contexts.',
         ],
+        isPrivate: true,
       ),
       Project(
         name: 'Resume Assistant',
@@ -246,6 +229,7 @@ final resumeProvider = Provider<ResumeData>((ref) {
           'Skills gap analysis and recommendations.',
           'Export optimized resumes in multiple formats.',
         ],
+        isPrivate: true,
       ),
       Project(
         name: 'Vent Social Platform',
@@ -258,8 +242,9 @@ final resumeProvider = Provider<ResumeData>((ref) {
           'Community support groups and forums.',
           'Cross-platform desktop application.',
         ],
+        isPrivate: true,
       ),
-      
+
       // iOS Development Showcase
       Project(
         name: 'UIC Clothing App',
@@ -313,7 +298,7 @@ final resumeProvider = Provider<ResumeData>((ref) {
     contact: Contact(
       email: 'danmusad@gmail.com',
       phone: '(405) 888-3324',
-      location: 'Austin, TX',
+      location: 'Honolulu, HI',
       links: [
         ContactLink(label: 'GitHub', url: 'https://github.com/DipoDM'),
       ],

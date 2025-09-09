@@ -42,6 +42,7 @@ class Project {
   final List<String> tech;
   final String description;
   final List<String> highlights;
+  final bool isPrivate;
 
   const Project({
     required this.name,
@@ -49,6 +50,7 @@ class Project {
     required this.tech,
     required this.description,
     required this.highlights,
+    this.isPrivate = false,
   });
 }
 
